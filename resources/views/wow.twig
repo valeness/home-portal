@@ -48,16 +48,26 @@
             },
 
             bindActions : function() {
+                var _inputs = $('.login-container input');
+                _inputs.unbind();
+                _inputs.on('focus', function() {
+                    helper.clearErrors();
+                });
+
                 var _submit_wow = $('#submit_wow');
                 _submit_wow.unbind();
                 _submit_wow.on('click', function() {
+
+                    // Init Click Functions
+                    $(this).loading();
+
+                    // Handle Click Logic
                     var data = {};
                     var button = $(this);
                     $('.login-container input').each(function() {
                         var id = $(this).attr('id');
                         data[id] = $(this).val();
                     });
-                    $(this).loading();
                     $.ajax({
                         url : '/wow/register',
                         data : data,
@@ -65,6 +75,11 @@
                         type : 'post',
                         success : function(r) {
                             button.loading(true);
+                            if(r.status != 1) {
+                                $.each(r['errors'], function(ind, val) {
+                                    $('#' + ind).error(val);
+                                });
+                            }
                         }
                     })
                 });

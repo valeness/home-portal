@@ -35,10 +35,27 @@
                     $(this).html($(this).attr('old_data'));
                     $(this).attr('old_data', '');
                 }
+            },
+            error : function(message) {
+                if(typeof message == 'undefined') {
+                    message = 'An Error Occurred'
+                }
+                $(this).attr('data-state', 'error');
+                $(this).addClass('error');
+                $(this).after('<div class="error-message">' + message + '</div>');
+
             }
         });
 
         var helper = {
+
+            clearErrors : function(){
+                var errors = $('[data-state=error]');
+                errors.each(function() {
+                    $(this).removeClass('error');
+                    $(this).next('.error-message').remove()
+                });
+            },
 
             getParam : function(name, url) {
                 if (!url) {
