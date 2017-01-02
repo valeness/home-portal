@@ -10,7 +10,12 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+//
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::any('/', ['uses' => 'PortalController@index', 'name' => 'home']);
+Route::any('/wow', ['uses' => 'WoWController@index', 'name' => 'home']);
+Route::any('/wow/register', ['uses' => 'WoWController@register', 'name' => 'wow-register']);

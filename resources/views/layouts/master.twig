@@ -1,0 +1,47 @@
+<HTML>
+
+{% include 'layouts/head' %}
+
+<body>
+
+
+{% block content %} {% endblock %}
+
+{% block scripts %}
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.js"></script>
+
+    <script>
+        jQuery.fn.extend({
+            render : function(data) {
+                if(typeof data == 'undefined') {
+                    data = {};
+                }
+                var source   = $(this).html();
+                var template = Handlebars.compile(source);
+                return template(data)
+            }
+        });
+
+        var helper = {
+
+            getParam : function(name, url) {
+                if (!url) {
+                    url = window.location.href;
+                }
+                name = name.replace(/[\[\]]/g, "\\$&");
+                var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                    results = regex.exec(url);
+                if (!results) return null;
+                if (!results[2]) return '';
+                return decodeURIComponent(results[2].replace(/\+/g, " "));
+            }
+        }
+
+    </script>
+
+{% endblock %}
+
+</body>
+
+</HTML>

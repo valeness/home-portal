@@ -1,0 +1,72 @@
+{% extends "layouts/master" %}
+
+{% block content %}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <div class="content">
+
+        <div class="login-container">
+            <h1>Register for WoW Private Server</h1>
+            <div class="input-container">
+                <label for="username">Username: </label>
+                <br />
+                <input type="text" id="username" placeholder="Username">
+            </div>
+
+            <div class="input-container">
+                <label for="password">Password: </label>
+                <br />
+                <input type="password" id="password" placeholder="Password">
+
+                <div class="button-container">
+                    <button id="submit_wow" class="button">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+    {{ parent() }}
+    <script>
+        var wow = {
+
+            csrf : '{{  _token }}',
+
+            init : function() {
+                var self = this;
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                self.bindActions();
+            },
+
+            bindActions : function() {
+                var _submit_wow = $('#submit_wow');
+                _submit_wow.unbind();
+                _submit_wow.on('click', function() {
+                    $.ajax({
+                        url : '/wow/register',
+                        data : {username: '', password: ''},
+                        dataType : 'json',
+                        type : 'post',
+                        success : function(r) {
+                            alert(r);
+                        }
+                    })
+                });
+            }
+        }
+
+        $(document).ready(function() {
+            wow.init();
+        })
+
+    </script>
+{% endblock %}
