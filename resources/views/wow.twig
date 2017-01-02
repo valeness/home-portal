@@ -51,13 +51,20 @@
                 var _submit_wow = $('#submit_wow');
                 _submit_wow.unbind();
                 _submit_wow.on('click', function() {
+                    var data = {};
+                    var button = $(this);
+                    $('.login-container input').each(function() {
+                        var id = $(this).attr('id');
+                        data[id] = $(this).val();
+                    });
+                    $(this).loading();
                     $.ajax({
                         url : '/wow/register',
-                        data : {username: '', password: ''},
+                        data : data,
                         dataType : 'json',
                         type : 'post',
                         success : function(r) {
-                            alert(r);
+                            button.loading(true);
                         }
                     })
                 });

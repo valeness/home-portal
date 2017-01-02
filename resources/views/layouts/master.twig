@@ -20,6 +20,21 @@
                 var source   = $(this).html();
                 var template = Handlebars.compile(source);
                 return template(data)
+            },
+            loading : function(state) {
+                if(typeof state == 'undefined') {
+                    state = false;
+                }
+
+                if(!state) {
+                    $(this).attr('disabled', 'true');
+                    $(this).attr('old_data', $(this).html());
+                    $(this).html('Loading...');
+                } else {
+                    $(this).removeAttr('disabled');
+                    $(this).html($(this).attr('old_data'));
+                    $(this).attr('old_data', '');
+                }
             }
         });
 
